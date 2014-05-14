@@ -39,6 +39,14 @@ def get_session():
     return _Session()
 
 def create_roster_db():
+    '''
+    Create roster.db in the Software Carpentry admin directory by
+    feeding it roster.sql.
+
+    This is normally done by the Makefile, but doing it ourselves
+    here relieves many users of an annoying dependency on make.
+    '''
+
     roster_sql_path = os.path.join(os.path.dirname(ROSTER_DB_PATH),
                                    'roster.sql')
     print "Reading from %s." % roster_sql_path
