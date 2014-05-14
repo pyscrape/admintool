@@ -1,7 +1,7 @@
 import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
-from sqlalchemy import create_engine, Column, Text, Date, Integer, \
+from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey, Table
 
 Base = declarative_base()
@@ -105,8 +105,9 @@ class Skills(Base):
         ])
 
 if __name__ == '__main__':
-    engine = create_engine('sqlite:///roster.db')
-    Session = sessionmaker(bind=engine)
+    import db
+
+    Session = sessionmaker(bind=db.get_engine())
     session = Session()
 
     for airport in session.query(Airport):

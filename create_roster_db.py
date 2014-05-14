@@ -1,17 +1,17 @@
 import os
 import sys
+import db
 import sqlite3
 
-if len(sys.argv) < 2:
-    print "usage: %s </path/to/roster.sql>" % sys.argv[0]
-    sys.exit(1)
+ROSTER_SQL_PATH = os.path.join(os.path.dirname(db.ROSTER_DB_PATH),
+                               'roster.sql')
 
-print "creating roster.db."
+print "Reading from %s." % ROSTER_SQL_PATH
+print "Creating %s." % db.ROSTER_DB_PATH
 
-conn = sqlite3.connect('roster.db')
+conn = sqlite3.connect(db.ROSTER_DB_PATH)
 c = conn.cursor()
-
-c.executescript(open(sys.argv[1]).read())
+c.executescript(open(ROSTER_SQL_PATH).read())
 c.close()
 
-print "done."
+print "Done."
