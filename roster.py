@@ -80,9 +80,10 @@ class Facts(Base):
     db = Column(Boolean, nullable=False)
 
     person = relationship('Person', backref=backref('facts', uselist=False))
-    airport = relationship('Airport', backref=backref('people_facts'))
+    airport = relationship('Airport')
 
-    def __str__(self):
+    @property
+    def skills(self):
         return ', '.join([
             skill for skill in ['python', 'r', 'unix', 'git', 'db']
             if getattr(self, skill)
@@ -94,11 +95,13 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=db.get_engine())
     session = Session()
 
-    for airport in session.query(Airport):
-        print "People at %s" % airport.iata
-        for facts in airport.people_facts:
-            print "  %s (%s)" % (facts.person.personal, facts),
-            if facts.twitter:
-                print "(@%s)" % facts.twitter
+    for person in session.query(Person):
+        print "  %s %s" % (person.personal, person.family),
+        if person.facts:
+            print "(%s)" % person.facts.skills,
+            if person.facts.twitter:
+                print "(@%s)" % person.facts.twitter
             else:
                 print
+        else:
+            print
