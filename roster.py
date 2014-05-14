@@ -28,13 +28,6 @@ class Event(Base):
 
     site = relationship('Site', backref=backref('events'))
 
-homebase_table = Table('homebase', Base.metadata,
-    Column('person', Text, ForeignKey('Person.person'),
-           nullable=False, primary_key=True),
-    Column('airport', Text, ForeignKey('Airport.iata'),
-           nullable=False, primary_key=True)
-)
-
 class Person(Base):
     __tablename__ = 'Person'
 
@@ -43,8 +36,6 @@ class Person(Base):
     middle = Column(Text)
     family = Column(Text, nullable=False)
     email = Column(Text, nullable=False, unique=True)
-
-    airports = relationship('Airport', secondary=homebase_table)
 
 class Task(Base):
     __tablename__ = 'Task'
@@ -72,31 +63,24 @@ class Airport(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
-    people = relationship('Person', secondary=homebase_table)
-
-class Online(Base):
-    __tablename__ = 'Online'
+class Facts(Base):
+    __tablename__ = 'Facts'
 
     person_id = Column('person', Text, ForeignKey('Person.person'),
                        nullable=False, primary_key=True)
+    active = Column(Boolean, nullable=False)
+    airport_id = Column('airport', Text, ForeignKey('Airport.iata'))
     github = Column(Text, unique=True)
     twitter = Column(Text, unique=True)
     site = Column(Text)
-
-    person = relationship('Person', backref=backref('online', uselist=False))
-
-class Skills(Base):
-    __tablename__ = 'Skills'
-
-    person_id = Column('person', Text, ForeignKey('Person.person'),
-                       nullable=False, primary_key=True)
     python = Column(Boolean, nullable=False)
     r = Column(Boolean, nullable=False)
     unix = Column(Boolean, nullable=False)
     git = Column(Boolean, nullable=False)
     db = Column(Boolean, nullable=False)
 
-    person = relationship('Person', backref=backref('skills', uselist=False))
+    person = relationship('Person', backref=backref('facts', uselist=False))
+    airport = relationship('Airport', backref=backref('people_facts'))
 
     def __str__(self):
         return ', '.join([
@@ -112,9 +96,9 @@ if __name__ == '__main__':
 
     for airport in session.query(Airport):
         print "People at %s" % airport.iata
-        for person in airport.people:
-            print "  %s (%s)" % (person.personal, person.skills),
-            if person.online and person.online.twitter:
-                print "(@%s)" % person.online.twitter
+        for facts in airport.people_facts:
+            print "  %s (%s)" % (facts.person.personal, facts),
+            if facts.twitter:
+                print "(@%s)" % facts.twitter
             else:
                 print
