@@ -1,4 +1,5 @@
 import os
+from hashlib import md5
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
@@ -36,6 +37,9 @@ class Person(Base):
     middle = Column(Text)
     family = Column(Text, nullable=False)
     email = Column(Text, nullable=False, unique=True)
+
+    def email_hash(self):
+        return md5(self.email.lower().strip()).hexdigest()
 
 class Task(Base):
     __tablename__ = 'Task'
