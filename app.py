@@ -1,14 +1,14 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 
 import db
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
+def home():
     session = db.get_session()
-    return "TODO: Put something here."
+    return render_template('index.html')
 
 class Config(object):
     DEBUG = True
