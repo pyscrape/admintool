@@ -1,6 +1,7 @@
 import os
 import sys
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *x: os.path.normpath(os.path.join(ROOT, *x))
@@ -17,6 +18,7 @@ if not ROSTER_DB_PATH:
     sys.exit(1)
 
 _engine = None
+_Session = None
 
 def get_engine():
     global _engine
@@ -24,6 +26,13 @@ def get_engine():
     if _engine is None:
         _engine = create_engine('sqlite:///%s' % ROSTER_DB_PATH)
     return _engine
+
+def get_session():
+    global _Session
+
+    if _Session is None:
+        _Session = sessionmaker(bind=get_engine())
+    return _Session()
 
 if __name__ == '__main__':
     print 'Using the database at %s.' % ROSTER_DB_PATH

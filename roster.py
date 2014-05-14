@@ -1,6 +1,6 @@
 import os
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey, Table
 
@@ -92,8 +92,7 @@ class Facts(Base):
 if __name__ == '__main__':
     import db
 
-    Session = sessionmaker(bind=db.get_engine())
-    session = Session()
+    session = db.get_session()
 
     for person in session.query(Person):
         print "  %s %s" % (person.personal, person.family),
