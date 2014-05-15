@@ -38,5 +38,6 @@ if __name__ == '__main__':
     if not USER or not PASS:
         raise Exception('Invalid setting for USERPASS.')
 
+    app.create_dbs()
     application = Application({USER: PASS})
     run_simple(BIND_ADDRESS, PORT, application)

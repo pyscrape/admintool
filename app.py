@@ -53,15 +53,16 @@ def home():
 
     return render_template('index.html', people=people)
 
+def create_dbs():
+    cities.create_db()
+    if not os.path.exists(db.ROSTER_DB_PATH):
+        db.create_roster_db()
+
 class Config(object):
     DEBUG = True
     TESTING = True
     PROPAGATE_EXCEPTIONS = True
 
 if __name__ == '__main__':
-    cities.create_db()
-    if not os.path.exists(db.ROSTER_DB_PATH):
-        db.create_roster_db()
-
     app.config.from_object(Config)
     app.run()
