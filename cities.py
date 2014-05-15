@@ -15,7 +15,7 @@ CITIES_ZIP_PATH = path('%s.zip' % CITIES_BASE)
 CITIES_TXT_PATH = path('%s.txt' % CITIES_BASE)
 CITIES_DB_PATH = path('%s.db' % CITIES_BASE)
 CITIES_DB_URL = 'sqlite:///%s' % CITIES_DB_PATH
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 Base = declarative_base()
 
@@ -33,6 +33,7 @@ class City(Base):
     state = Column(Text, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+    population = Column(Integer, nullable=False)
 
     @property
     def full_name(self):
@@ -56,7 +57,8 @@ def get_session():
     return _Session()
 
 def find(name):
-    return get_session().query(City).filter(City.name.contains(name))
+    return get_session().query(City).filter(City.name.like('%s%%' % name)).\
+           order_by(City.population.desc())
 
 def destroy_db():
     global _engine
@@ -91,7 +93,8 @@ def create_db():
             latitude=parts[4],
             longitude=parts[5],
             country=parts[8],
-            state=parts[10]
+            state=parts[10],
+            population=parts[14]
         )
         session.add(city)
     session.add(Meta(version=SCHEMA_VERSION))
