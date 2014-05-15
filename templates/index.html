@@ -6,6 +6,28 @@
   <div class="row">
     <div class="col-md-6">
       <form method="get" role="form">
+        <h4>Geography</h4>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}">
+        </div>
+
+        <div class="form-group">
+          <label for="radius">Search Radius</label>
+          <select id="radius" name="radius">
+            {% macro radius_option(val) -%}
+            <option value="{{ val }}" {% if request.args.radius == val %}selected{% endif %}>Within {{ val }} km of city</option>
+            {%- endmacro %}
+
+            {{ radius_option('10') }}
+            {{ radius_option('50') }}
+            {{ radius_option('100') }}
+            {{ radius_option('250') }}
+            {{ radius_option('500') }}
+          </select>
+        </div>
+
         <h4>Skills</h4>
         <div class="checkbox">
           <label>
