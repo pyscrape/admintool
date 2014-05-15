@@ -26,7 +26,6 @@
             <option value="{{ val }}" {% if request.args.radius == val %}selected{% endif %}>Within {{ val }} km of city</option>
             {%- endmacro %}
 
-            {{ radius_option('10') }}
             {{ radius_option('50') }}
             {{ radius_option('100') }}
             {{ radius_option('250') }}
