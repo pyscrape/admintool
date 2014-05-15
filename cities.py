@@ -15,7 +15,7 @@ CITIES_ZIP_PATH = path('%s.zip' % CITIES_BASE)
 CITIES_TXT_PATH = path('%s.txt' % CITIES_BASE)
 CITIES_DB_PATH = path('%s.db' % CITIES_BASE)
 CITIES_DB_URL = 'sqlite:///%s' % CITIES_DB_PATH
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 Base = declarative_base()
 
@@ -30,14 +30,16 @@ class City(Base):
     id = Column(Integer, nullable=False, primary_key=True)
     name = Column(Text, nullable=False)
     country = Column(Text, nullable=False)
-    state = Column(Text, nullable=False)
+    state = Column(Text)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
     population = Column(Integer, nullable=False)
 
     @property
     def full_name(self):
-        return '%s (%s, %s)' % (self.name, self.state, self.country)
+        if self.state:
+            return '%s, %s (%s)' % (self.name, self.state, self.country)
+        return '%s (%s)' % (self.name, self.country)
 
 _engine = None
 _Session = None
@@ -59,6 +61,13 @@ def get_session():
 def find(name):
     return get_session().query(City).filter(City.name.like('%s%%' % name)).\
            order_by(City.population.desc())
+
+def is_number(x):
+    try:
+        int(x)
+        return True
+    except ValueError:
+        return False
 
 def destroy_db():
     global _engine
@@ -87,13 +96,15 @@ def create_db():
     session = get_session()
     for line in open(CITIES_TXT_PATH, 'r'):
         parts = line.split('\t')
+        state = parts[10]
+        if is_number(state): state = None
         city = City(
             id=parts[0],
             name=parts[1].decode('utf-8'),
             latitude=parts[4],
             longitude=parts[5],
             country=parts[8],
-            state=parts[10],
+            state=state,
             population=parts[14]
         )
         session.add(city)
