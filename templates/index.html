@@ -59,6 +59,7 @@
             <img class="media-object pull-left" src="//gravatar.com/avatar/{{ person.email_hash() }}?d=mm" alt="gravatar for {{ person.email }}">
             <div class="media-body">
               {{ person.personal }} {{person.family}}<br>
+              <small><a href="https://www.google.com/#q={{ person.facts.airport.iata }}+airport">{{ person.facts.airport.iata }}</a> ({{ person.facts.airport.country }})</small></br>
               {% if person.facts.skills %}
               <small>Teaches {{ person.facts.skills }}</small>
               {% endif %}
