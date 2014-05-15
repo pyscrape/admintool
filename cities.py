@@ -6,6 +6,8 @@ from sqlalchemy import Column, Text, Integer, Float
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from utils import is_number
+
 ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *x: os.path.normpath(os.path.join(ROOT, *x))
 
@@ -316,13 +318,6 @@ def get_session():
 def find(name):
     return get_session().query(City).filter(City.name.like('%s%%' % name)).\
            order_by(City.population.desc())
-
-def is_number(x):
-    try:
-        int(x)
-        return True
-    except ValueError:
-        return False
 
 def destroy_db():
     global _engine
