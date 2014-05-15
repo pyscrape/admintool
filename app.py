@@ -2,6 +2,7 @@ import os
 from flask import Flask
 
 import db
+import cities
 
 app = Flask(__name__)
 
@@ -16,6 +17,7 @@ class Config(object):
     PROPAGATE_EXCEPTIONS = True
 
 if __name__ == '__main__':
+    cities.create_db()
     if not os.path.exists(db.ROSTER_DB_PATH):
         db.create_roster_db()
 
