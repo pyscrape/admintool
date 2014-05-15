@@ -64,5 +64,6 @@ class Config(object):
     PROPAGATE_EXCEPTIONS = True
 
 if __name__ == '__main__':
+    create_dbs()
     app.config.from_object(Config)
     app.run()

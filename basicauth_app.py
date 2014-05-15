@@ -39,5 +39,7 @@ if __name__ == '__main__':
         raise Exception('Invalid setting for USERPASS.')
 
     app.create_dbs()
+    app.app.config.from_object(app.Config)
     application = Application({USER: PASS})
-    run_simple(BIND_ADDRESS, PORT, application)
+    run_simple(BIND_ADDRESS, PORT, application, use_debugger=True,
+               use_evalex=False)
