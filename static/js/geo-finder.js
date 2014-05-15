@@ -21,10 +21,10 @@ $(function() {
         $.getJSON(url, {q: q}, cb);
       }
     }).on('typeahead:selected typeahead:autocompleted', function(e, sugg) {
-      setLatLong(this, name, sugg.lat, sugg.long);
+      setLatLong(form, name, sugg.lat, sugg.long);
       formGroup.removeClass('has-error');
     }).on('input', function() {
-      setLatLong(this, name);
+      setLatLong(form, name);
       formGroup.toggleClass('has-error', !!$(this).val());
     });
 

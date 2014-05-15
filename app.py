@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, abort, Response
 import db
 import cities
 from roster import Person, Facts
+from utils import safe_float, safe_int
 
 app = Flask(__name__)
 
@@ -24,16 +25,31 @@ def cities_json():
 
 @app.route('/')
 def home():
+    latitude = safe_float(request.args.get('city_lat'))
+    longitude = safe_float(request.args.get('city_long'))
+    radius = safe_int(request.args.get('radius'))
     python = bool(request.args.get('python'))
     r = bool(request.args.get('r'))
 
     people = db.get_session().query(Person).join(Person.facts).\
+             join(Facts.airport).\
              filter(Facts.active == True)
 
     if python:
         people = people.filter(Facts.python == True)
     if r:
         people = people.filter(Facts.r == True)
+
+    if latitude is not None and longitude is not None and radius:
+        people = (
+            person for person in people
+            if person.facts.airport.is_within_radius_of(
+                radius,
+                latitude,
+                longitude,
+                units='km'
+            )
+        )
 
     return render_template('index.html', people=people)
 

@@ -5,6 +5,8 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey
 
+from distance import distance_on_unit_sphere
+
 Base = declarative_base()
 
 class Site(Base):
@@ -66,6 +68,15 @@ class Airport(Base):
     country = Column(Text, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+
+    def is_within_radius_of(self, radius, latitude, longitude, **kwargs):
+        return distance_on_unit_sphere(
+            self.latitude,
+            self.longitude,
+            latitude,
+            longitude,
+            **kwargs
+        ) <= radius
 
 class Facts(Base):
     __tablename__ = 'Facts'
