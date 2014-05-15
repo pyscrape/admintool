@@ -2,7 +2,7 @@ import os
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
-                       Float, Boolean, ForeignKey, Table
+                       Float, Boolean, ForeignKey
 
 Base = declarative_base()
 
