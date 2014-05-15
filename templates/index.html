@@ -1,16 +1,22 @@
 {% extends 'layout.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typeaheadjs.css') }}">
+{% endblock %}
+
 {% block content %}
   <h1>Instructor Finder</h1>
 
   <div class="row">
     <div class="col-md-6">
-      <form method="get" role="form">
+      <form method="get" role="form" autocomplete="off">
         <h4>Geography</h4>
 
         <div class="form-group">
           <label for="city">City</label>
-          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}">
+          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}" data-geo-finder="{{ url_for('cities_json') }}">
+          <input type="hidden" name="city_lat" value="{{ request.args.city_lat }}">
+          <input type="hidden" name="city_long" value="{{ request.args.city_long }}">
         </div>
 
         <div class="form-group">
@@ -63,4 +69,9 @@
       </ul>
     </div>
   </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/typeahead.jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/geo-finder.js') }}"></script>
 {% endblock %}
