@@ -34,6 +34,10 @@ class City(Base):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
+    @property
+    def full_name(self):
+        return '%s (%s, %s)' % (self.name, self.state, self.country)
+
 _engine = None
 _Session = None
 
@@ -50,6 +54,9 @@ def get_session():
     if _Session is None:
         _Session = sessionmaker(bind=get_engine())
     return _Session()
+
+def find(name):
+    return get_session().query(City).filter(City.name.contains(name))
 
 def destroy_db():
     global _engine
