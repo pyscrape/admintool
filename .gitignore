@@ -1,3 +1,4 @@
 venv
 *.pyc
 cities5000.*
+roster.db
