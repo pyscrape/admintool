@@ -187,9 +187,9 @@ CREATE TABLE Airport(
        primary key(iata)
 );
 
-INSERT INTO "Airport" VALUES('ABC','Any Big Company','United-States',30.194444,-97.669722);
-INSERT INTO "Airport" VALUES('DEF','Down East Flyers','United-States',41.938889,-72.683056);
-INSERT INTO "Airport" VALUES('GHI','Grosse Hoche International','Germany',41.938889,-72.683056);
+INSERT INTO "Airport" VALUES('AUS','Austin','United-States',30.194444,-97.669722);
+INSERT INTO "Airport" VALUES('BNE','Brisbane','Australia',-27.384167,153.1175);
+INSERT INTO "Airport" VALUES('DFW','Dallas Fort Worth','United-States',32.896389,-97.0375);
 
 CREATE TABLE Facts(
        person    text NOT NULL,  -- who
@@ -211,8 +211,8 @@ CREATE TABLE Facts(
 );
 
 
-INSERT INTO "Facts" VALUES('bell.j','F',1,'ABC','gitbell','tweetbell','http://fake.net/bell',1,0,1,1,1);
-INSERT INTO "Facts" VALUES('cox.a','F',0,'DEF','gitcox','tweetcox','http://fake.net/cox',0,1,1,1,1);
-INSERT INTO "Facts" VALUES('curie.marie','F',1,'GHI','gitcurie','tweetcurie','http://fake.net/curie',1,1,1,1,1);
-INSERT INTO "Facts" VALUES('hodgkin.d','F',1,'ABC','githodgkin','tweethodgkin','http://fake.net/hodgkin',1,0,1,0,1);
-INSERT INTO "Facts" VALUES('wilson.g','M',1,'DEF','gitwilson','tweetwilson','http://fake.net/wilson',1,0,1,0,0);
+INSERT INTO "Facts" VALUES('bell.j','F',1,'AUS','gitbell','tweetbell','http://fake.net/bell',1,0,1,1,1);
+INSERT INTO "Facts" VALUES('cox.a','F',0,'BNE','gitcox','tweetcox','http://fake.net/cox',0,1,1,1,1);
+INSERT INTO "Facts" VALUES('curie.marie','F',1,'DFW','gitcurie','tweetcurie','http://fake.net/curie',1,1,1,1,1);
+INSERT INTO "Facts" VALUES('hodgkin.d','F',1,'AUS','githodgkin','tweethodgkin','http://fake.net/hodgkin',1,0,1,0,1);
+INSERT INTO "Facts" VALUES('wilson.g','M',1,'BNE','gitwilson','tweetwilson','http://fake.net/wilson',1,0,1,0,0);
