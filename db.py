@@ -8,16 +8,8 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *x: os.path.normpath(os.path.join(ROOT, *x))
 
 SWCARPENTRY_ADMIN_PATH = os.environ.get('SWCARPENTRY_ADMIN_PATH')
-_DEFAULT_ADMIN_PATH = path('..', 'admin')
-
-if not SWCARPENTRY_ADMIN_PATH and os.path.exists(_DEFAULT_ADMIN_PATH):
-    SWCARPENTRY_ADMIN_PATH = _DEFAULT_ADMIN_PATH
-
-if not SWCARPENTRY_ADMIN_PATH:
-    print "The 'admin' directory does not appear to be alongside "
-    print "this one, and SWCARPENTRY_ADMIN_PATH isn't defined! Please "
-    print "ensure at least one of these conditions is satisfied."
-    sys.exit(1)
+if SWCARPENTRY_ADMIN_PATH is None:
+    SWCARPENTRY_ADMIN_PATH = os.curdir
 
 ROSTER_DB_PATH = os.path.join(SWCARPENTRY_ADMIN_PATH, 'roster.db')
 

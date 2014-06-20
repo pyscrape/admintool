@@ -1,17 +1,12 @@
 ## Requirements
 
 * Python 2.7
-* [pip and virtualenv][]
-* The [swcarpentry/admin][] repository
+* (Optional) [pip and virtualenv][]
+* (Optional) The [swcarpentry/admin][] repository
 
 ## Quick Start
 
-Things will work most smoothly if your admin repository is reachable at
-`../admin` relative to this repository. If it's not, you should set
-your `SWCARPENTRY_ADMIN_PATH` environment variable to the location of
-the admin repository on your machine.
-
-Then, from the root directory of this repository, run:
+If you are using `virtualenv`, go into the root directory of this repository and run:
 
 ```
 virtualenv venv
@@ -20,7 +15,12 @@ pip install -r requirements.txt
 python app.py
 ```
 
-At this point you can visit http://127.0.0.1:5000/ to use the web
+If you are *not* using `virtualenv`:
+
+1.  Install `SQLAlchemy` and `Flask`.
+2.  `python app.py`
+
+Either way, you can then visit http://127.0.0.1:5000/ to use the web
 interface.
 
   [pip and virtualenv]: http://flask.pocoo.org/docs/installation/#virtualenv
