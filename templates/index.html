@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typeaheadjs.css') }}">
+{% endblock %}
+
+{% block content %}
+  <h1>Instructor Finder</h1>
+
+  <div class="row">
+    <div class="col-md-6">
+      <form method="get" role="form" autocomplete="off">
+        <h4>Geography</h4>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}" data-geo-finder="{{ url_for('cities_json') }}">
+          <input type="hidden" name="city_lat" value="{{ request.args.city_lat }}">
+          <input type="hidden" name="city_long" value="{{ request.args.city_long }}">
+        </div>
+
+        <div class="form-group">
+          <label for="radius">Search Radius</label>
+          <select id="radius" name="radius">
+            {% macro radius_option(val) -%}
+            <option value="{{ val }}" {% if request.args.radius == val %}selected{% endif %}>Within {{ val }} km of city</option>
+            {%- endmacro %}
+
+            {{ radius_option('50') }}
+            {{ radius_option('100') }}
+            {{ radius_option('250') }}
+            {{ radius_option('500') }}
+          </select>
+        </div>
+
+        <h4>Skills</h4>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="python"
+             {% if request.args.python %}checked{% endif %}> Python
+          </label>
+        </div>
+
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="r"
+             {% if request.args.r %}checked{% endif %}> R
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <h4>Instructors</h4>
+      <ul class="media-list">
+        {% for person in people %}
+          <li class="media">
+            <img class="media-object pull-left" src="//gravatar.com/avatar/{{ person.email_hash() }}?d=mm" alt="gravatar for {{ person.email }}">
+            <div class="media-body">
+              {{ person.personal }} {{person.family}}<br>
+              <small><a href="https://www.google.com/#q={{ person.facts.airport.iata }}+airport">{{ person.facts.airport.iata }}</a> ({{ person.facts.airport.country }})</small><br>
+              {% if person.facts.skills %}
+              <small>Teaches {{ person.facts.skills }}</small><br>
+              {% endif %}
+              <small><a href="mailto:{{ person.email }}">{{ person.email }}</a></small>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/typeahead.jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/geo-finder.js') }}"></script>
+{% endblock %}
