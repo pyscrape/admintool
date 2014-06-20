@@ -172,3 +172,6 @@ roster.db : roster.sql
 
 clean :
 	@rm -f roster.db *.pyc *~
+
+test :
+	nosetests
