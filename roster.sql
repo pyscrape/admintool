@@ -118,13 +118,14 @@ CREATE TABLE Cohort(
        startdate  date NOT NULL, -- start date
        cohort     text NOT NULL, -- name of cohort
        mode       text NOT NULL, -- 'live' or 'online'
+       active     int  NOT NULL, -- still running?
        primary key(cohort)
 );
 
-INSERT INTO "Cohort" VALUES('2011-01-01','online-01','online');
-INSERT INTO "Cohort" VALUES('2012-01-01','live-01','online');
-INSERT INTO "Cohort" VALUES('2013-01-01','online-02','online');
-INSERT INTO "Cohort" VALUES('2014-01-01','online-03','online');
+INSERT INTO "Cohort" VALUES('2011-01-01','online-01','online',0);
+INSERT INTO "Cohort" VALUES('2012-01-01','live-01','online',0);
+INSERT INTO "Cohort" VALUES('2013-01-01','online-02','online',0);
+INSERT INTO "Cohort" VALUES('2014-01-01','online-03','online',1);
 
 -- Who was trained when?
 CREATE TABLE Trainee(
@@ -141,10 +142,10 @@ INSERT INTO "Trainee" VALUES('cox.a','online-01','complete');
 INSERT INTO "Trainee" VALUES('curie.marie','online-01','incomplete');
 INSERT INTO "Trainee" VALUES('curie.marie','live-01','complete');
 INSERT INTO "Trainee" VALUES('elion.gertrude','online-02','complete');
-INSERT INTO "Trainee" VALUES('hodgkin.d','online-02','complete');
+INSERT INTO "Trainee" VALUES('hodgkin.d','online-02',NULL);
 INSERT INTO "Trainee" VALUES('nusslein-volhard.christiane','online-03',NULL);
 INSERT INTO "Trainee" VALUES('wilson.g','online-01','incomplete');
-INSERT INTO "Trainee" VALUEs('wilson.g','online-03',NULL);
+INSERT INTO "Trainee" VALUES('wilson.g','online-03',NULL);
 
 -- What badges do we give out?
 CREATE TABLE Badges(

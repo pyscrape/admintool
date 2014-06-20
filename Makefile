@@ -143,6 +143,10 @@ flags-instructors : roster.db
 training-count : roster.db
 	@sqlite3 roster.db "select Cohort.cohort || ' (' || Cohort.startdate || '): ' || count(*) from Cohort join Trainee on Cohort.cohort=Trainee.cohort group by Cohort.cohort order by Cohort.cohort;"
 
+## training-inactive    : who is still listed as incomplete for closed training?
+training-inactive : roster.db
+	@sqlite3 roster.db "select Cohort.cohort || ': ' || Person.personal || ' ' || Person.family || ' <' || Person.email || '>' from Cohort join Trainee join Person on Cohort.cohort=Trainee.cohort and Trainee.person=Person.person where (not Cohort.active) and (Trainee.status is null) order by Cohort.cohort, Person.person;"
+
 #----------------------------------------
 # Badges.
 ##---------------------------------------
@@ -167,4 +171,4 @@ roster.db : roster.sql
 	@sqlite3 roster.db < roster.sql
 
 clean :
-	@rm -f roster.db *~
+	@rm -f roster.db *.pyc *~
