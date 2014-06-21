@@ -23,11 +23,13 @@ def cities_json():
         for city in cities.find(query)[:NUM_RESULTS]
     ]), mimetype='application/json')
 
+
 @app.route('/')
 def home():
     latitude = safe_float(request.args.get('city_lat'))
     longitude = safe_float(request.args.get('city_long'))
     radius = safe_int(request.args.get('radius'))
+    closest = safe_int(request.args.get('closest'))
     python = bool(request.args.get('python'))
     r = bool(request.args.get('r'))
 
@@ -50,6 +52,10 @@ def home():
                 units='km'
             )
         )
+    elif latitude is not None and longitude is not None and closest:
+        # not searching radius but rather closest people
+        people = sorted(people,
+            key=lambda x: x.facts.airport.distance_from(latitude, longitude))[:closest]
 
     return render_template('index.html', people=people)
 

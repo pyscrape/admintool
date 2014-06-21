@@ -26,13 +26,29 @@
             <option value="{{ val }}" {% if request.args.radius == val %}selected{% endif %}>Within {{ val }} km of city</option>
             {%- endmacro %}
 
+            <option value="0">--</option>
             {{ radius_option('50') }}
             {{ radius_option('100') }}
             {{ radius_option('250') }}
             {{ radius_option('500') }}
           </select>
         </div>
+        <h5>Or</h5>
+        <div class="form-group">
+          <label for="closest">Search Closest</label>
+          <select id="closest" name="closest">
+            {% macro closest_option(val) -%}
+            <option value="{{ val }}" {% if request.args.closest == val %}selected{% endif %}>
+              {% if val == '1' %}{{ val }} Instructor{% else %}{{ val }} Instuctors{% endif %}</option>
+            {%- endmacro %}
 
+            <option value="0">--</option>
+            {{ closest_option('1') }}
+            {{ closest_option('3') }}
+            {{ closest_option('5') }}
+            {{ closest_option('10') }}
+          </select>
+        </div>
         <h4>Skills</h4>
         <div class="checkbox">
           <label>
