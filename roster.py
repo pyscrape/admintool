@@ -78,6 +78,15 @@ class Airport(Base):
             **kwargs
         ) <= radius
 
+    def distance_from(self, latitude, longitude, **kwargs):
+        return distance_on_unit_sphere(
+            self.latitude,
+            self.longitude,
+            latitude,
+            longitude,
+            **kwargs)
+
+
 class Facts(Base):
     __tablename__ = 'Facts'
 
