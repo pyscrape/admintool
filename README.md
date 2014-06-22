@@ -33,6 +33,21 @@ and also allow:
 
 Just run `nosetests` from the root of the repository.
 
+## Environment Variables
+
+The following environment variables can be set to change the behavior
+of the app.
+
+* `SWCARPENTRY_ADMIN_PATH` is a path to a directory containing
+  `roster.sql`, and in which `roster.db` will be created if it
+  doesn't already exist. By default, it's the same as the root directory of
+  the repository, in which case test data will be used.
+
+* `FLASK_CONFIG` is the base server configuration to use. It can be
+  `default`, `testing`, or `production`; by default, it's `default`.
+
+<!-- Links -->
+
   [Add Multiple Users]: http://addmultipleusers.happynuclear.com/
   [SQLAlchemy]: http://www.sqlalchemy.org/
   [Flask]: http://flask.pocoo.org/
