@@ -3,6 +3,7 @@ from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
 import app
+from config import config
 
 # https://github.com/mitsuhiko/werkzeug/blob/master/examples/httpbasicauth.py
 class Application(object):
@@ -39,7 +40,9 @@ if __name__ == '__main__':
         raise Exception('Invalid setting for USERPASS.')
 
     app.create_dbs()
-    app.app.config.from_object(app.Config)
+    config_name = os.environ.get('FLASK_CONFIG', 'default')
+    app.app.config.from_object(config[config_name])
+
     application = Application({USER: PASS})
     run_simple(BIND_ADDRESS, PORT, application, use_debugger=True,
                use_evalex=False)

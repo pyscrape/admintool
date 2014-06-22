@@ -58,12 +58,10 @@ def create_dbs():
     if not os.path.exists(db.ROSTER_DB_PATH):
         db.create_roster_db()
 
-class Config(object):
-    DEBUG = True
-    TESTING = True
-    PROPAGATE_EXCEPTIONS = True
-
 if __name__ == '__main__':
     create_dbs()
-    app.config.from_object(Config)
+
+    from config import config
+    config_name = os.environ.get('FLASK_CONFIG', 'default')
+    app.config.from_object(config[config_name])
     app.run()
