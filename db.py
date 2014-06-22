@@ -2,6 +2,7 @@ import os
 import sys
 import sqlite3
 from sqlalchemy import create_engine
+from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -20,7 +21,11 @@ def get_engine():
     global _engine
 
     if _engine is None:
-        _engine = create_engine('sqlite:///%s' % ROSTER_DB_PATH)
+        _engine = create_engine(
+            'sqlite:///%s' % ROSTER_DB_PATH,
+            connect_args={'check_same_thread':False},
+            poolclass=StaticPool
+        )
     return _engine
 
 def get_session():
