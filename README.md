@@ -16,7 +16,7 @@ and also allow:
 
 ## Quick Start
 
-1.  Install [SQLAlchemy][] and [Flask][].
+1.  Install [SQLAlchemy][], [Flask][], and [Nose][].
 2.  `python app.py`.
 3.  Go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
@@ -29,8 +29,13 @@ and also allow:
 5.  `python app.py`
 6.  Go to [http://127.0.0.1:5000/](http://127.0.0.1:5000/).
 
+## Running Tests
+
+Just run `nosetests` from the root of the repository.
+
   [Add Multiple Users]: http://addmultipleusers.happynuclear.com/
   [SQLAlchemy]: http://www.sqlalchemy.org/
   [Flask]: http://flask.pocoo.org/
+  [Nose]: https://nose.readthedocs.org/
   [pip and virtualenv]: http://flask.pocoo.org/docs/installation/#virtualenv
   [swcarpentry/admin]: https://github.com/swcarpentry/admin
