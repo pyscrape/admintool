@@ -1,6 +1,8 @@
 admintool
 =========
 
+[![Build Status](https://travis-ci.org/swcarpentry/admintool.svg?branch=master)](https://travis-ci.org/swcarpentry/admintool)
+
 An administration tool for Software Carpentry bootcamps.
 
 ## Goals
