@@ -6,17 +6,17 @@ from sqlalchemy import Column, Text, Integer, Float
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from utils import is_number
+from admintool.utils import is_number
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *x: os.path.normpath(os.path.join(ROOT, *x))
 
 CITIES_BASE = 'cities5000'
-CITIES_URL = 'http://download.geonames.org/export/dump/%s.zip' % CITIES_BASE
-CITIES_ZIP_PATH = path('%s.zip' % CITIES_BASE)
-CITIES_TXT_PATH = path('%s.txt' % CITIES_BASE)
-CITIES_DB_PATH = path('%s.db' % CITIES_BASE)
-CITIES_DB_URL = 'sqlite:///%s' % CITIES_DB_PATH
+CITIES_URL = 'http://download.geonames.org/export/dump/{}.zip'.format(CITIES_BASE)
+CITIES_ZIP_PATH = path('{}.zip'.format(CITIES_BASE))
+CITIES_TXT_PATH = path('{}.txt'.format(CITIES_BASE))
+CITIES_DB_PATH = path('{}.db'.format(CITIES_BASE))
+CITIES_DB_URL = 'sqlite:///{}'.format(CITIES_DB_PATH)
 SCHEMA_VERSION = 5
 
 # https://gist.github.com/alexex/4073388
@@ -335,11 +335,11 @@ def create_db():
             if session.query(Meta)[0].version != SCHEMA_VERSION:
                 raise Exception('schema mismatch, rebuild database')
             return
-        except Exception, e:
+        except Exception:
             session.close()
             destroy_db()
 
-    print "Creating %s.db." % CITIES_BASE
+    print "Creating {}.db.".format(CITIES_BASE)
     get_cities_txt()
     engine = get_engine()
     Base.metadata.create_all(engine)

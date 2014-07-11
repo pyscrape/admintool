@@ -14,7 +14,7 @@
 
         <div class="form-group">
           <label for="city">City</label>
-          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}" data-geo-finder="{{ url_for('cities_json') }}">
+          <input type="text" class="form-control" id="city" name="city" value="{{ request.args.city }}" data-geo-finder="{{ url_for('.cities_json') }}">
           <input type="hidden" name="city_lat" value="{{ request.args.city_lat }}">
           <input type="hidden" name="city_long" value="{{ request.args.city_long }}">
         </div>

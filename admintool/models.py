@@ -1,4 +1,3 @@
-import os
 from hashlib import md5
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -70,13 +69,7 @@ class Airport(Base):
     longitude = Column(Float, nullable=False)
 
     def is_within_radius_of(self, radius, latitude, longitude, **kwargs):
-        return distance_on_unit_sphere(
-            self.latitude,
-            self.longitude,
-            latitude,
-            longitude,
-            **kwargs
-        ) <= radius
+        return self.distance_from(latitude, longitude, **kwargs) <= radius
 
     def distance_from(self, latitude, longitude, **kwargs):
         return distance_on_unit_sphere(

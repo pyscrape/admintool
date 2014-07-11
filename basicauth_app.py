@@ -2,13 +2,13 @@ import os
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
-import app
-from config import config
+from admintool import create_app, create_dbs
 
 # https://github.com/mitsuhiko/werkzeug/blob/master/examples/httpbasicauth.py
 class Application(object):
-    def __init__(self, users, realm='login required'):
+    def __init__(self, users, app, realm='login required'):
         self.users = users
+        self.app = app
         self.realm = realm
 
     def check_auth(self, username, password):
@@ -28,7 +28,7 @@ class Application(object):
         if not auth or not self.check_auth(auth.username, auth.password):
             response = self.auth_required(request)
         else:
-            response = app.app
+            response = self.app
         return response(environ, start_response)
 
 if __name__ == '__main__':
@@ -39,10 +39,10 @@ if __name__ == '__main__':
     if not USER or not PASS:
         raise Exception('Invalid setting for USERPASS.')
 
-    app.create_dbs()
-    config_name = os.environ.get('FLASK_CONFIG', 'default')
-    app.app.config.from_object(config[config_name])
+    app = create_app(os.environ.get('FLASK_CONFIG', 'default'))
 
-    application = Application({USER: PASS})
+    create_dbs()
+
+    application = Application({USER: PASS}, app)
     run_simple(BIND_ADDRESS, PORT, application, use_debugger=True,
                use_evalex=False)

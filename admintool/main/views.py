@@ -1,15 +1,18 @@
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import json
-from flask import Flask, render_template, request, abort, Response
+from flask import render_template, request, abort, Response
 
-import db
-import cities
-from roster import Person, Facts
-from utils import safe_float, safe_int
+from ..models import Person, Facts
+from ..utils import safe_float, safe_int
+from .. import db
 
-app = Flask(__name__)
+from . import main
+from . import cities
 
-@app.route('/cities.json')
+
+@main.route('/cities.json')
 def cities_json():
     MIN_QUERY_LENGTH = 2
     NUM_RESULTS = 5
@@ -24,7 +27,7 @@ def cities_json():
     ]), mimetype='application/json')
 
 
-@app.route('/')
+@main.route('/')
 def home():
     latitude = safe_float(request.args.get('city_lat'))
     longitude = safe_float(request.args.get('city_long'))
@@ -57,17 +60,4 @@ def home():
         people = sorted(people,
             key=lambda x: x.facts.airport.distance_from(latitude, longitude))[:closest]
 
-    return render_template('index.html', people=people)
-
-def create_dbs():
-    cities.create_db()
-    if not os.path.exists(db.ROSTER_DB_PATH):
-        db.create_roster_db()
-
-if __name__ == '__main__':
-    create_dbs()
-
-    from config import config
-    config_name = os.environ.get('FLASK_CONFIG', 'default')
-    app.config.from_object(config[config_name])
-    app.run()
+    return render_template('main/index.html', people=people)
