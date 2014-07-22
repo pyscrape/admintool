@@ -35,6 +35,19 @@ def get_session():
         _Session = sessionmaker(bind=get_engine())
     return _Session()
 
+def find(table_obj, field_name, value):
+    '''
+    An attempt at a generic find().
+
+    May duplicate a known SQLAlchemy pattern. Could use ORDER_BY kwarg.
+    '''
+    if not hasattr(table_obj, field_name):
+        print >> sys.stderr, 'Table %s has no field "%s"' % (
+            table_obj, field_name)
+        return [] # XXX assumes particular consumption pattern
+    field = getattr(table_obj, field_name)
+    return get_session().query(table_obj).filter(field.like('%s%%' % value))
+
 def create_roster_db():
     '''
     Create roster.db in the Software Carpentry admin directory by
