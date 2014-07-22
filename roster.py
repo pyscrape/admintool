@@ -23,6 +23,7 @@ class Event(Base):
     enddate = Column(Date)
     id = Column('event', Text, nullable=False, primary_key=True)
     site_id = Column('site', Text, ForeignKey('Site.site'), nullable=False)
+    details_url = Column(Text, unique=True)
     eventbrite = Column(Text, unique=True)
     # paytype = Column(Text)
     # payamount = Column(Text)

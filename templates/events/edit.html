@@ -25,6 +25,7 @@
   {{ form.csrf_token }}
   {{ with_errors(form.startdate, value=event.startdate) }}
   {{ with_errors(form.enddate, value=event.enddate) }}
+  {{ with_errors(form.details_url, value=event.details_url) }}
 
   <div class='actions'>
     <input class="btn btn-primary" name="commit" type="submit" value="Save" />
