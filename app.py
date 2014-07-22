@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, abort, Response
 
 import db
 import cities
-from roster import Person, Facts
+from roster import Person, Facts, Event
 from utils import safe_float, safe_int
 
 app = Flask(__name__)
@@ -58,6 +58,11 @@ def home():
             key=lambda x: x.facts.airport.distance_from(latitude, longitude))[:closest]
 
     return render_template('index.html', people=people)
+
+@app.route('/events')
+def events():
+    events = db.get_session().query(Event).all()
+    return render_template('events/index.html', events=events)
 
 def create_dbs():
     cities.create_db()
