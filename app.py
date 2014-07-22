@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, abort, Response
 import db
 import cities
 from roster import Person, Facts, Event
+from forms import EventForm
 from utils import safe_float, safe_int
 
 app = Flask(__name__)
@@ -59,10 +60,19 @@ def home():
 
     return render_template('index.html', people=people)
 
+### Event Manager
 @app.route('/events')
 def events():
     events = db.get_session().query(Event).all()
     return render_template('events/index.html', events=events)
+
+@app.route('/events/<id>/edit')
+def edit_event(id):
+    form = EventForm()
+    event = db.get_session().query(Event).get(id)
+    return render_template('events/edit.html', event=event, form=form)
+
+###
 
 def create_dbs():
     cities.create_db()

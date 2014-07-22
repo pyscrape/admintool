@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<h1>Edit an Event</h2>
+<form method="POST" action="/">
+    {{ form.csrf_token }}
+    {{ form.id.label }}         {{ form.id(size=30, value=event.id) }}
+    {{ form.startdate.label }}  {{ form.startdate(value=event.startdate) }}
+    {{ form.enddate.label }}  {{ form.startdate(value=event.enddate) }}
+    <input type="submit" value="Go">
+</form>
+{% endblock %}
