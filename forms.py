@@ -6,5 +6,6 @@ DATE_FORMAT = '%Y-%m-%d'
 
 class EventForm(Form):
     id = TextField('Identifier', validators=[DataRequired()])
-    startdate = DateField('Start', format=DATE_FORMAT)
+    startdate = DateField('Start', validators=[DataRequired()],
+                          format=DATE_FORMAT)
     enddate = DateField('End', format=DATE_FORMAT)
