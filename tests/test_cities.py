@@ -7,7 +7,7 @@ from unittest import TestCase
 import cities
 class TestCities(TestCase):
 
-    def test_create_db(self):
+    def test_find(self):
         cities.create_db()
         query = cities.find('London')
         results = list(query)
