@@ -23,7 +23,11 @@
       <td>{{ event.startdate }}</td>
       <td>{{ event.enddate }}</td>
       <td>
-        <a href={{ event.details_url }} target='_blank'>{{ event.details_url }}</a>
+        {% if event.details_url %}
+          <a href={{ event.details_url }} target='_blank'>{{ event.details_url }}</a>
+        {% else %}
+          (none)
+        {% endif %}
       </td>
     </tr>
   {% endfor %}
