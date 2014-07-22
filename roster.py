@@ -24,9 +24,9 @@ class Event(Base):
     id = Column('event', Text, nullable=False, primary_key=True)
     site_id = Column('site', Text, ForeignKey('Site.site'), nullable=False)
     eventbrite = Column(Text, unique=True)
-    paytype = Column(Text)
-    payamount = Column(Text)
-    fundtype = Column(Text)
+    # paytype = Column(Text)
+    # payamount = Column(Text)
+    # fundtype = Column(Text)
     attendance = Column(Integer)
 
     site = relationship('Site', backref=backref('events'))
