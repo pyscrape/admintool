@@ -30,8 +30,9 @@ def sites_json():
     query = request.args.get('q', '')
     if not query:
         abort(400)
+    sites = db.get_session().query(Site).filter(Site.named_like(query))
     results = json.dumps([
-        {'name': s.fullname} for s in db.find(Site, 'fullname', query)
+        {'name': s.fullname} for s in sites
     ])
     return Response(results, mimetype='application/json')
 

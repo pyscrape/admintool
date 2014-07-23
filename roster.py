@@ -1,6 +1,7 @@
 import os
 from hashlib import md5
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_method
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey
@@ -15,6 +16,10 @@ class Site(Base):
     id = Column('site', Text, nullable=False, primary_key=True)
     fullname = Column(Text, nullable=False, unique=True)
     country = Column(Text)
+
+    @hybrid_method
+    def named_like(self, search_term):
+        return self.fullname.like('%s%%' % search_term)
 
 class Event(Base):
     __tablename__ = 'Event'
