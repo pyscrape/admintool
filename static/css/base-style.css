@@ -1,0 +1,25 @@
+#dropzone {
+  height: 100px;
+  border: 1px dashed grey;
+  background: #E5E5E5;
+  text-align: center;
+  padding-top: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.table th {
+  cursor: pointer;
+}
+
+.dz-preview {
+  display: none;
+}
+
+#instruction-message {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  text-align: center;
+  display: none;
+}

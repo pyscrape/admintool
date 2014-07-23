@@ -59,6 +59,29 @@ def home():
 
     return render_template('index.html', people=people)
 
+@app.route('/bulkUpload')
+def bulkUpload():
+    return render_template('bulkUpload.html')
+
+@app.route('/file-upload', methods=['POST'])
+def fileUpload():
+    files = request.files.getlist('file')
+    firstLineSkipped = False
+    data = {'data': [], 'headers': None}
+    for file in files:
+        for line in file:
+            if firstLineSkipped:
+                data['data'].append(line.split(','))
+            else:
+                data['headers'] = line.split(',')
+                firstLineSkipped = True
+
+    return json.dumps(data)
+
+@app.route('/addUsers', methods=['POST'])
+def addUsers():
+    users = request.json['users']
+
 def create_dbs():
     cities.create_db()
     if not os.path.exists(db.ROSTER_DB_PATH):

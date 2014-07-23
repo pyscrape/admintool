@@ -2,3 +2,6 @@ venv
 *.pyc
 cities5000.*
 roster.db
+.DS_Store
+test1.csv
+test2.csv

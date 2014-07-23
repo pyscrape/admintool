@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% set active_page = "bulkUpload" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typeaheadjs.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base-style.css') }}">
+{% endblock %}
+
+{% block content %}
+  <h1>Bulk Uploader</h1>
+  <div class="col-md-12">
+    <form action="/file-upload" id="dropzone" name="dropzone">Drag and drop a file here to upload, or click to browse for a file.</form>
+  </div>
+  <div class="col-md-6 col-md-offset-3 alert alert-danger" id="instruction-message">
+  </div>
+  <div class="col-md-12" id="table-area">
+    <table class="table" id="data-table">
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/typeahead.jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/geo-finder.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bulkUpload.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/dropzone.js') }}"></script>
+{% endblock %}
