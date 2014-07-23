@@ -1,10 +1,11 @@
 import os
 import json
-from flask import Flask, render_template, request, abort, Response
+from flask import Flask, render_template, request, abort, Response, redirect
 
 import db
 import cities
-from roster import Person, Facts
+from roster import Person, Facts, Event, Site
+from forms import EventForm
 from utils import safe_float, safe_int
 
 app = Flask(__name__)
@@ -15,7 +16,8 @@ def cities_json():
     NUM_RESULTS = 5
 
     query = request.args.get('q', '')
-    if len(query) < MIN_QUERY_LENGTH: abort(400)
+    if len(query) < MIN_QUERY_LENGTH:
+        abort(400)
     return Response(json.dumps([
         {'name': city.full_name,
          'lat': city.latitude,
@@ -23,6 +25,16 @@ def cities_json():
         for city in cities.find(query)[:NUM_RESULTS]
     ]), mimetype='application/json')
 
+@app.route('/sites.json')
+def sites_json():
+    query = request.args.get('q', '')
+    if not query:
+        abort(400)
+    sites = db.get_session().query(Site).filter(Site.named_like(query))
+    results = json.dumps([
+        {'name': s.fullname} for s in sites
+    ])
+    return Response(results, mimetype='application/json')
 
 @app.route('/')
 def home():
@@ -59,6 +71,7 @@ def home():
 
     return render_template('index.html', people=people)
 
+### Bulk Uploader
 @app.route('/bulkUpload')
 def bulkUpload():
     return render_template('bulkUpload.html')
@@ -81,6 +94,43 @@ def fileUpload():
 @app.route('/addUsers', methods=['POST'])
 def addUsers():
     users = request.json['users']
+
+###
+
+
+### Event Manager
+@app.route('/events')
+def events():
+    events = db.get_session().query(Event).all()
+    site = request.args.get('site', '').replace('+', ' ') # XXX URI quote
+    if site:
+        events = [e for e in events if e.site.fullname == site]
+    return render_template('events/index.html', events=events)
+
+@app.route('/events/<id>/edit')
+def edit_event(id):
+    form = EventForm()
+    event = db.get_session().query(Event).get(id)
+    return render_template('events/edit.html', event=event, form=form)
+
+@app.route('/events/<id>', methods=['POST'])
+def update_event(id):
+    db_session = db.get_session()
+
+    form = EventForm()
+    event = db_session.query(Event).get(id)
+
+    form.id.data = event.id
+    form.populate_obj(event)
+
+    if form.validate_on_submit():
+        db_session.add(event)
+        db_session.commit()
+        return redirect('events')
+    else:
+        return render_template('events/edit.html', event=event, form=form)
+
+###
 
 def create_dbs():
     cities.create_db()

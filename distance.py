@@ -35,4 +35,4 @@ def distance_on_unit_sphere(lat1, long1, lat2, long2, units='km'):
 
     if units.lower() == 'km':
         return arc * KM_MULTIPLIER
-    return arc * MILE_MUTIPLIER
+    return arc * MILE_MULTIPLIER

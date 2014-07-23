@@ -1,6 +1,6 @@
-import os
 from hashlib import md5
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.hybrid import hybrid_method
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey
@@ -16,6 +16,10 @@ class Site(Base):
     fullname = Column(Text, nullable=False, unique=True)
     country = Column(Text)
 
+    @hybrid_method
+    def named_like(self, search_term):
+        return self.fullname.like('%s%%' % search_term)
+
 class Event(Base):
     __tablename__ = 'Event'
 
@@ -23,10 +27,11 @@ class Event(Base):
     enddate = Column(Date)
     id = Column('event', Text, nullable=False, primary_key=True)
     site_id = Column('site', Text, ForeignKey('Site.site'), nullable=False)
+    details_url = Column(Text, unique=True)
     eventbrite = Column(Text, unique=True)
-    paytype = Column(Text)
-    payamount = Column(Text)
-    fundtype = Column(Text)
+    # paytype = Column(Text)
+    # payamount = Column(Text)
+    # fundtype = Column(Text)
     attendance = Column(Integer)
 
     site = relationship('Site', backref=backref('events'))
