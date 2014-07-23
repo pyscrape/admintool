@@ -1,5 +1,4 @@
 import os
-import sys
 import sqlite3
 from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
