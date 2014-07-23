@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, abort, Response, redirect
 
 import db
 import cities
-from roster import Person, Facts, Event
+from roster import Person, Facts, Event, Site
 from forms import EventForm
 from utils import safe_float, safe_int
 
@@ -16,7 +16,8 @@ def cities_json():
     NUM_RESULTS = 5
 
     query = request.args.get('q', '')
-    if len(query) < MIN_QUERY_LENGTH: abort(400)
+    if len(query) < MIN_QUERY_LENGTH:
+        abort(400)
     return Response(json.dumps([
         {'name': city.full_name,
          'lat': city.latitude,
@@ -24,6 +25,16 @@ def cities_json():
         for city in cities.find(query)[:NUM_RESULTS]
     ]), mimetype='application/json')
 
+@app.route('/sites.json')
+def sites_json():
+    query = request.args.get('q', '')
+    if not query:
+        abort(400)
+    sites = db.get_session().query(Site).filter(Site.named_like(query))
+    results = json.dumps([
+        {'name': s.fullname} for s in sites
+    ])
+    return Response(results, mimetype='application/json')
 
 @app.route('/')
 def home():
@@ -64,6 +75,9 @@ def home():
 @app.route('/events')
 def events():
     events = db.get_session().query(Event).all()
+    site = request.args.get('site', '').replace('+', ' ') # XXX URI quote
+    if site:
+        events = [e for e in events if e.site.fullname == site]
     return render_template('events/index.html', events=events)
 
 @app.route('/events/<id>/edit')

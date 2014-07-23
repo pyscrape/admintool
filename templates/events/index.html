@@ -1,10 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/typeaheadjs.css') }}">
 {% endblock %}
 
 {% block content %}
   <h1>Event Manager</h1>
+  <form method="get" role="form" autocomplete="off">
+    <div>Filter by:
+      <label for="site">Site</label>
+      <input type="text" class="form-control" id="site" name="site" value="{{ request.args.site }}" data-geo-finder="{{ url_for('sites_json') }}">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
   <table class='table table-striped'>
   <thead>
     <tr>
@@ -33,4 +41,9 @@
   {% endfor %}
   </tbody>
   </table>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/typeahead.jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/geo-finder.js') }}"></script>
 {% endblock %}
