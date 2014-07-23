@@ -82,8 +82,8 @@ def events():
 
 @app.route('/events/<id>/edit')
 def edit_event(id):
-    form = EventForm()
     event = db.get_session().query(Event).get(id)
+    form = EventForm(obj=event)
     return render_template('events/edit.html', event=event, form=form)
 
 @app.route('/events/<id>', methods=['POST'])
