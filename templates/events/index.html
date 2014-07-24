@@ -36,13 +36,13 @@
   {% for event in events %}
     <tr>
       <td>
-        <a href={{ url_for('edit_event', id=event.id) }}>{{ event.id }}</a>
+        <a href="{{ url_for('edit_event', id=event.id) }}">{{ event.id }}</a>
       </td>
       <td>{{ event.startdate }}</td>
       <td>{{ event.enddate }}</td>
       <td>
         {% if event.details_url %}
-          <a href={{ event.details_url }} target='_blank'>{{ event.details_url }}</a>
+          <a href="{{ event.details_url }}" target="_blank">{{ event.details_url }}</a>
         {% else %}
           (none)
         {% endif %}
@@ -51,6 +51,10 @@
   {% endfor %}
   </tbody>
   </table>
+  <a href="{{ url_for('new_event') }}" class="btn btn-default">
+    <span class="glyphicon glyphicon-plus"></span>
+    Create a new event
+  </a>
 {% endblock %}
 
 {% block scripts %}
