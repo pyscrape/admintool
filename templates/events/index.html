@@ -6,6 +6,15 @@
 
 {% block content %}
   <h1>Event Manager</h1>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert {{category}}" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
   <form method="get" role="form" autocomplete="off">
     <div>Filter by:
       <label for="site">Site</label>
@@ -13,6 +22,7 @@
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
+
   <table class='table table-striped'>
   <thead>
     <tr>
