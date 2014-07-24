@@ -80,6 +80,17 @@ def events():
         events = [e for e in events if e.site.fullname == site]
     return render_template('events/index.html', events=events)
 
+@app.route('/events/new')
+def new_event():
+    event = Event()
+    form = EventForm(obj=event)
+    form.new_record = True
+    return render_template('events/new.html', form=form)
+
+@app.route('/events', methods=['POST'])
+def create_event():
+    pass
+
 @app.route('/events/<id>/edit')
 def edit_event(id):
     event = db.get_session().query(Event).get(id)
