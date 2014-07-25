@@ -83,18 +83,27 @@ def fileUpload():
     data = {'data': [], 'headers': None}
     for file in files:
         for line in file:
-            if firstLineSkipped:
-                data['data'].append(line.split(','))
+            if len(line.split('\r')) > 1:
+                lines = line.split('\r')
+                for l in lines:
+                    if firstLineSkipped:
+                        data['data'].append(l.split(','))
+                    else:
+                        data['headers'] = l.split(',')
+                        firstLineSkipped = True
             else:
-                data['headers'] = line.split(',')
-                firstLineSkipped = True
-
+                if firstLineSkipped:
+                    data['data'].append(line.split(','))
+                else:
+                    data['headers'] = line.split(',')
+                    firstLineSkipped = True
     return json.dumps(data)
 
 @app.route('/addUsers', methods=['POST'])
 def addUsers():
     users = request.json['users']
-
+    success = db.add_users(users)
+    return json.dumps(success)
 ###
 
 
