@@ -20,8 +20,9 @@ var postUserTable = function postUserTable() {
     data: JSON.stringify({users: userData}, null, '\t'),
     contentType: 'application/json;charset=UTF-8',
     success: function(result) {
-      $('#instruction-message').html('Done! The data has been added. If you need to add another file click here:<br><a class="btn btn-success" href="/bulkUpload"></a>');
+      $('#instruction-message').html('Done! The data has been added. If you need to add another file click here:<br><a class="btn btn-success" href="/bulkUpload">Upload Another File</a>');
       $('#data-table').slideUp();
+      $('#submit-table-btn').hide();
     },
     error: function (error) {
       console.log('========== ERRROR ==========')

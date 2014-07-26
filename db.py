@@ -34,6 +34,13 @@ def get_session():
         _Session = sessionmaker(bind=get_engine())
     return _Session()
 
+def add_users(users):
+  #Here we would want to actually insert the users list into the database.
+  #Using SQLAlchemy is a little beyond my Python expertise, so I think it is
+  #best if I leave that to someone who knows what they are doing instead of
+  #hacking some poor solution together that'll need to be redone anyway.
+  return True
+
 def create_roster_db():
     '''
     Create roster.db in the Software Carpentry admin directory by
