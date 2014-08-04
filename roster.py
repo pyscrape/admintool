@@ -8,7 +8,6 @@ from sqlalchemy.orm import relationship, backref
 from sqlalchemy import Column, Text, Date, Integer, \
                        Float, Boolean, ForeignKey
 
-import db
 from distance import distance_on_unit_sphere
 
 Base = declarative_base()
@@ -135,7 +134,7 @@ def _ascii_slugify(value):
     return value.lower()
 
 
-def unique_name_id(personal, family):
+def unique_name_id(personal, family, session):
     """
     Make a unique, readable person identifier from a first (personal)
     and last(family) name.
@@ -156,7 +155,7 @@ def unique_name_id(personal, family):
 
     name_id = '{}.{}'.format(family, personal)
 
-    matching_ids = [p.id for p in db.get_session().query(Person)
+    matching_ids = [p.id for p in session.query(Person)
                     if p.id.startswith(name_id)]
 
     if not matching_ids:

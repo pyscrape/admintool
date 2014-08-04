@@ -1,17 +1,21 @@
 import os
+import sys
 import sqlite3
 from sqlalchemy import create_engine
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.pool import StaticPool, NullPool
 from sqlalchemy.orm import sessionmaker
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *x: os.path.normpath(os.path.join(ROOT, *x))
 
+RUNNING_TESTS = 'nose' in sys.modules
+
 SWCARPENTRY_ADMIN_PATH = os.environ.get('SWCARPENTRY_ADMIN_PATH')
-if SWCARPENTRY_ADMIN_PATH is None:
+if RUNNING_TESTS or SWCARPENTRY_ADMIN_PATH is None:
     SWCARPENTRY_ADMIN_PATH = os.curdir
 
-ROSTER_DB_PATH = os.path.join(SWCARPENTRY_ADMIN_PATH, 'roster.db')
+ROSTER_DB = 'roster.test.db' if RUNNING_TESTS else 'roster.db'
+ROSTER_DB_PATH = os.path.join(SWCARPENTRY_ADMIN_PATH, ROSTER_DB)
 
 _engine = None
 _Session = None
@@ -23,7 +27,7 @@ def get_engine():
         _engine = create_engine(
             'sqlite:///%s' % ROSTER_DB_PATH,
             connect_args={'check_same_thread':False},
-            poolclass=StaticPool
+            poolclass=NullPool if RUNNING_TESTS else StaticPool
         )
     return _engine
 
@@ -60,6 +64,25 @@ def create_roster_db():
     c.executescript(open(roster_sql_path).read())
     c.close()
     conn.close()
+
+if RUNNING_TESTS:
+    def setup():
+        if os.path.exists(ROSTER_DB_PATH):
+            os.unlink(ROSTER_DB_PATH)
+        create_roster_db()
+
+    def teardown():
+        global _Session
+        global _engine
+
+        if _Session:
+            _Session.close_all()
+            _Session = None
+        if _engine:
+            _engine.dispose()
+            _engine = None
+        if os.path.exists(ROSTER_DB_PATH):
+            os.unlink(ROSTER_DB_PATH)
 
 if __name__ == '__main__':
     print 'Using the database at %s.' % ROSTER_DB_PATH
