@@ -27,17 +27,15 @@ CREATE TABLE Event(
        unique(eventbrite)
 );
 
-INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance)
-  VALUES
-    ('2011-11-07','2011-11-08','2011-11-07-euphoric','esu.fake',NULL,NULL),
-    ('2012-01-18','2012-01-19','2012-01-18-esu','esu.fake',NULL,14),
-    ('2013-02-06','2013-02-07','2013-02-06-turing','tmu.fake','333444333',47),
-    ('2013-02-16','2013-02-17','2013-02-16-turing','tmu.fake','333444555',31),
-    ('2013-02-16',NULL,'2013-02-16-jvnc','jvnc.fake','222333444',NULL),
-    ('2013-09-06','2013-09-07','2013-02-09-tmu','tmu.fake','444555555',21),
-    ('2013-10-17','2013-10-26','2013-10-17-grace-hopper','gh.fake','999888777',36),
-    ('2014-02-23','2014-02-24','2014-02-23-esu','esu.fake','111222333',28),
-    ('2014-05-10','2014-05-12','2014-05-10-turing','tmu.fake','555666777',NULL);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2011-11-07','2011-11-08','2011-11-07-euphoric','esu.fake',NULL,NULL);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2012-01-18','2012-01-19','2012-01-18-esu','esu.fake',NULL,14);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2013-02-06','2013-02-07','2013-02-06-turing','tmu.fake','333444333',47);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2013-02-16','2013-02-17','2013-02-16-turing','tmu.fake','333444555',31);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2013-02-16',NULL,'2013-02-16-jvnc','jvnc.fake','222333444',NULL);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2013-09-06','2013-09-07','2013-02-09-tmu','tmu.fake','444555555',21);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2013-10-17','2013-10-26','2013-10-17-grace-hopper','gh.fake','999888777',36);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2014-02-23','2014-02-24','2014-02-23-esu','esu.fake','111222333',28);
+INSERT INTO "Event" (startdate, enddate, event, site, eventbrite, attendance) VALUES ('2014-05-10','2014-05-12','2014-05-10-turing','tmu.fake','555666777',NULL);
 
 CREATE TABLE Person(
        person   text NOT NULL,     -- identifier (lastname.initial or lastname.firstname)

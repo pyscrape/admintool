@@ -1,3 +1,6 @@
+import os
+import re
+import unicodedata
 from hashlib import md5
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_method
@@ -117,6 +120,52 @@ class Facts(Base):
             skill for skill in ['python', 'r', 'unix', 'git', 'db']
             if getattr(self, skill)
         ])
+
+
+def _ascii_slugify(value):
+    """
+    Make a unicode string safely ascii and strip whitespace,
+    special characters, etc.
+
+    """
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    value = unicode(re.sub(r'[^\w\s-]', '', value).strip())
+    value = unicode(re.sub(r'\s+', '-', value))
+    return value.lower()
+
+
+def unique_name_id(personal, family, session):
+    """
+    Make a unique, readable person identifier from a first (personal)
+    and last(family) name.
+
+    Note that this requires that both the personal and family name have
+    at least one ascii character.
+
+    This indiscriminately removes non-ASCII characters.
+
+    """
+    personal = _ascii_slugify(unicode(personal))
+    family = _ascii_slugify(unicode(family))
+
+    if not personal:
+        raise ValueError('No ascii characters in personal name.')
+    if not family:
+        raise ValueError('No ascii characters in family name.')
+
+    name_id = '{}.{}'.format(family, personal)
+
+    matching_ids = [p.id for p in session.query(Person)
+                    if p.id.startswith(name_id)]
+
+    if not matching_ids:
+        return name_id
+
+    # disambiguate from other people that have the same first/last names.
+    trailing_ints = (re.search(r'\d+$', i) for i in matching_ids)
+    trailing_ints = [int(i) for i in trailing_ints if i is not None]
+    new_trailing = max(trailing_ints) + 1 if trailing_ints else 1
+    return '{}.{}'.format(name_id, new_trailing)
 
 if __name__ == '__main__':
     import db
