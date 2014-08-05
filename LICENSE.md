@@ -1,6 +1,6 @@
 # License
 
-Copyright (c) 2014, the authors.
+Copyright (c) 2014, Mozilla.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
