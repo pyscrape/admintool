@@ -1,6 +1,8 @@
 admintool
 =========
 
+**This project has been replaced by [swcarpentry/amy](https://github.com/swcarpentry/amy). Please consider contributing to that project.**
+
 [![Build Status](https://travis-ci.org/swcarpentry/admintool.svg?branch=master)](https://travis-ci.org/swcarpentry/admintool)
 
 An administration tool for Software Carpentry bootcamps.
